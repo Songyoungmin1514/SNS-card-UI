@@ -24,6 +24,8 @@
         width: 30px;
         height: 30px;
         border-radius: 50%;
+        outline: 2px solid #d62976; /* 바깥쪽 테두리 */
+        cursor: pointer; /* 커서: 포인터(손가락 모양) */
     }
     .nickname {
         font-weight: bold;
@@ -34,13 +36,27 @@
     .like-icon {
         cursor: pointer;
     }
+    .modal {
+      position: fixed;
+      top : 0;
+      left : 0;
+      right : 0;
+      bottom : 0;
+      padding: 50px;
+      background: rgba(0,0,0,0.5);
+      text-align: center;
+      display: none;
+    
+
+    }
+    
   </style>
 </head>
 <body>
   <div class="card">
     <div class="card-header">
       <!-- 프로필 이미지 -->
-      <img class="profile-img" src="https://images.pexels.com/photos/4197491/pexels-photo-4197491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+      <img id="profileImg" class="profile-img" src="https://images.pexels.com/photos/4197491/pexels-photo-4197491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
       <!-- 프로필 닉네임 -->
       <span class="nickname">mini</span>
     </div>
@@ -61,6 +77,11 @@
     <!-- 내용 -->
     <p class="caption">하늘 예쁘다</p>
   </div>
+  
+  <!-- 모달창 -->
+  <div id="modal" class="modal">
+    <img class="modal-img" src="https://i.pinimg.com/736x/ba/2f/70/ba2f703b4c22eaeb8e3c4a49cbd9e30d.jpg" alt="스토리 이미지"/>
+  </div>
 
   <!-- JS -->
    <script>
@@ -68,18 +89,50 @@
         // console.log("잘 열렸나?")
         //좋아요 아이콘 선택
         //이벤트 리스너(eventListener) 추가(add)
-        document.querySelector(".like-icon").addEventListener("click", function() {
-            //tab으로 들여쓰기한 뒤 작성
-            // console.log("깅가란")
-            //1. 하얀색 하트 -> 빨강 하트 ❤
-            
-            document.querySelector("#like-icon").textContent = "♥️"
-            
-            // 2. 0 -> 1
+        // const likeIcon = document.querySelector(".like-icon")
+        // const count = document.querySelector("#count")
 
-            document.querySelector("#count").textContent = "1"
+
+        // likeIcon.addEventListener("click", function() {
+        //     //tab으로 들여쓰기한 뒤 작성
+        //     // console.log("깅가란")
+        //     //1. 하얀색 하트 -> 빨강 하트 ❤
+            
+        //     likeIcon.textContent = "♥️"
+            
+        //     // 2. 0 -> 1
+        //     const countNumber = Number(count.textContent)
+        //     const result = countNumber + 1
+
+
+        //     count.textContent = result
+        // })
+        const likeIcon = document.querySelector("#like-icon")
+        const count = document.querySelector("#count")
+
+        likeIcon.addEventListener("click", function () {
+        if(likeIcon.textContent === "♥️") {
+            likeIcon.textContent = "🤍"
+            count.textContent = Number(count.textContent) - 1;
+        } else {
+            likeIcon.textContent = "♥️"
+            count.textContent = Number(count.textContent) + 1;
+        }
+        });
+
+        const profileImg = document.querySelector("#profileImg")
+        const modalImg = document.querySelector("#modal")
+        // let ismodal = false
+
+        profileImg.addEventListener("click", function() {
+            document.querySelector("#modal").style.display = 'block';
         })
-        
+
+        modalImg.addEventListener("click", function() {
+          document.querySelector("#modal").style.display = 'none';
+        })
+
+
    </script>
 </body>
 </html>
