@@ -49,6 +49,36 @@
     
 
     }
+
+    .reply-area {
+        display: flex; /* textarea와 button 한 줄에 수평 배치*/
+        align-items: center; /* textarea와 button을 세로 기준 가운데 정렬 */
+        padding-bottom: 4px; /* 안쪽-아래 여백 */
+        border-bottom: 1px solid #ccc; /* 아래쪽 테두리 추가 */
+    }
+    .reply-textarea {
+        flex: 1; /* 가로크기 버튼 제외 꽉 채우게 */
+        height: 18px; /* 기본 세로 크기 */
+        max-height: 80px; /* 최대 세로 크기 */
+        outline: none; /* 포커스 됐을 때의 테두리 없애기 */
+        border: none; /* 기본 테두리 없애기 */
+        resize: none; /* 사용자가 조절하지 못하도록 막음 */
+    }
+    .add-reply-button {
+        outline: none; /* 포커스 됐을 때의 테두리 없애기 */
+        border: none; /* 기본 테두리 없애기 */
+        background: none; /* 배경색 없애기 */
+        color: #3143e3;
+        cursor: pointer; /* 커서 손가락 모양으로 변경 */
+    }
+
+    .reply-list {
+        padding: 0; /* 안쪽 기본 여백 제거 */
+        list-style: none; /* 기본 리스트 스타일 제거 */
+    }
+    .reply-list li {
+        word-break: break-word; /* 강제 줄바꿈 */
+    }
     
   </style>
 </head>
@@ -56,13 +86,13 @@
   <div class="card">
     <div class="card-header">
       <!-- 프로필 이미지 -->
-      <img id="profileImg" class="profile-img" src="https://images.pexels.com/photos/4197491/pexels-photo-4197491.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+      <img id="profileImg" class="profile-img" src="https://i.pinimg.com/736x/bb/5c/27/bb5c27af55406383f2fb2a782e4409e7.jpg" />
       <!-- 프로필 닉네임 -->
-      <span class="nickname">mini</span>
+      <span class="nickname">Ryo</span>
     </div>
     
     <!-- 메인 이미지 -->
-    <img class="main-img" src="https://images.pexels.com/photos/907485/pexels-photo-907485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"/>
+    <img class="main-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSKwiX7yLqYWVah8PBrEk-FMqI8vOdnVnlVA&s"/>
 
     <div class="actions">
       <!-- 좋아요 아이콘 -->
@@ -75,9 +105,16 @@
     </div>
 
     <!-- 내용 -->
-    <p class="caption">하늘 예쁘다</p>
+    <p class="caption">나 미용사해도 될 듯</p>
+
+    <div class="reply-area">
+      <textarea id="reply-textarea" class="reply-textarea" placeholder="댓글 달기..."></textarea>
+      <button id="add-reply-button" class="add-reply-button">게시</button>
+    </div>
+
+    <ul id="reply-list" class="reply-list"></ul>
+
   </div>
-  
   <!-- 모달창 -->
   <div id="modal" class="modal">
     <img class="modal-img" src="https://i.pinimg.com/736x/ba/2f/70/ba2f703b4c22eaeb8e3c4a49cbd9e30d.jpg" alt="스토리 이미지"/>
@@ -107,8 +144,13 @@
 
         //     count.textContent = result
         // })
+        const profileImg = document.querySelector("#profileImg");
         const likeIcon = document.querySelector("#like-icon")
         const count = document.querySelector("#count")
+        const replyTextarea = document.querySelector("#reply-textarea")
+        const addReplyButton = document.querySelector("#add-reply-button")
+        const replyList = document.querySelector("#reply-list")
+        const modalImg = document.querySelector("#modal")
 
         likeIcon.addEventListener("click", function () {
         if(likeIcon.textContent === "♥️") {
@@ -120,13 +162,31 @@
         }
         });
 
-        const profileImg = document.querySelector("#profileImg")
-        const modalImg = document.querySelector("#modal")
+
         // let ismodal = false
 
         profileImg.addEventListener("click", function() {
             document.querySelector("#modal").style.display = 'block';
         })
+
+        addReplyButton.addEventListener("click", function () {
+            const replyTextareaValue = replyTextarea.value
+            if(replyTextarea.value.trim() === "") {
+                    alert("댓글을 입력해주세요.")
+                    return
+                }
+            const newReply = document.createElement("li");
+            const newDeleteBtn = document.createElement("button")
+            const nickName = document.querySelector(".nickname").textContent;
+            newDeleteBtn.textContent = "x"
+            newDeleteBtn.addEventListener("click", function() {
+                newReply.remove()
+            })
+            newReply.textContent = `${nickName}: ${replyTextarea.value}`;
+            newReply.appendChild(newDeleteBtn);
+            replyList.appendChild(newReply);
+            replyTextarea.value = "";
+        });
 
         modalImg.addEventListener("click", function() {
           document.querySelector("#modal").style.display = 'none';
